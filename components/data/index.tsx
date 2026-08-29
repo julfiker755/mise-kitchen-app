@@ -1,3 +1,4 @@
+export * from "./recipes";
 export const movies = [
   {
     id: "1",

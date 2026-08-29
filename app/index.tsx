@@ -1,93 +1,56 @@
-import { Heading } from "@/components/ui";
+import { assets } from "@/assets";
+import { Button } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
-import FavIcon from "@/icon/favIcon";
+import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import React from "react";
+import { Image, StatusBar, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 
 export default function Index() {
   const router = useRouter();
+
   return (
-    <>
-      <View style={tw`flex-1`}>
-        <View style={tw`mx-auto mt-4`}>
-          <Image
-            source={require("../assets/image/logo.png")}
-            style={{ width: 170, height: 80, resizeMode: "contain" }}
-          />
-        </View>
-        <View style={tw`mx-auto`}>
-          <Image
-            source={require("../assets/image/login-img.png")}
-            style={{ width: 350, height: 300, resizeMode: "contain" }}
-          />
-        </View>
-        <View style={tw`px-6`}>
-          <Heading variant="h1" style={tw`text-center text-black`}>
-            Choose your role
-          </Heading>
+    <SafeAreaView style={[tw`flex-1 justify-between px-6 py-4`, { backgroundColor: "#FAF7F2" }]}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FAF7F2" />
 
-          <Heading style={tw`text-center text-black mt-3`}>
-            Book trusted services as a User, or list and manage your offerings
-            as a Service Provider on swifpay.
-          </Heading>
-          <View style={tw`gap-4 mt-6`}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={tw`bg-white rounded-3xl px-4 py-2 flex-row items-center justify-between`}
-              onPress={() => {
-                router.push({
-                  pathname: "/(auth)/login",
-                  params: {
-                    role: "user",
-                  },
-                });
-              }}
-            >
-              <View style={tw`flex-row items-center gap-2`}>
-                <View
-                  style={tw`size-14 rounded-full bg-primary items-center justify-center`}
-                >
-                  <FavIcon width={30} height={30} name="user1" />
-                </View>
-
-                <Text style={tw`text-black text-2xl font-medium`}>
-                  Service user
-                </Text>
-              </View>
-
-              <FavIcon name="arrowTopRight" />
-            </TouchableOpacity>
-
-            {/* Service Provider */}
-            <TouchableOpacity
-              activeOpacity={0.8}
-              style={tw`bg-white rounded-3xl px-4 py-2 flex-row items-center justify-between`}
-              onPress={() => {
-                router.push({
-                  pathname: "/(auth)/login",
-                  params: {
-                    role: "provider",
-                  },
-                });
-              }}
-            >
-              <View style={tw`flex-row items-center gap-2`}>
-                <View
-                  style={tw`size-14 rounded-full bg-primary items-center justify-center`}
-                >
-                  <FavIcon width={30} height={30} name="provider" />
-                </View>
-
-                <Text style={tw`text-black text-2xl font-medium`}>
-                  Service provider
-                </Text>
-              </View>
-
-              <FavIcon name="arrowTopRight" />
-            </TouchableOpacity>
-          </View>
-        </View>
+      <View style={tw`items-center pt-2`}>
+        <Image
+          source={assets.logo}
+          style={{ width: 300, height: 150 }}
+          resizeMode="contain"
+        />
       </View>
-    </>
+
+      <View style={tw`items-center justify-center flex-1 my-2`}>
+        <Image
+          source={assets.home_img}
+          style={tw`w-full max-w-[320px] h-[330px]`}
+          resizeMode="contain"
+        />
+      </View>
+
+      <View style={tw`w-full pb-4`}>
+        <Text style={tw`text-primary text-[30px] font-bold text-center leading-[36px] tracking-tight mb-3`}>
+          Find Your Next Favorite Meal
+        </Text>
+
+        <Text style={tw`text-[#7A7A7A] text-[15px] text-center leading-[22px] px-2 mb-8`}>
+          Browse hundreds of delicious recipes by category, ingredients, or your favorite creators.
+        </Text>
+
+        <Button
+          onPress={() => router.push("/(tabs)/home")}
+          style={tw`rounded-full h-12`}
+        >
+          <Text style={tw`text-white text-base font-semibold mr-2`}>
+            Let's browse
+          </Text>
+          <Feather name="arrow-right" size={20} color="#FFFFFF" />
+        </Button>
+      </View>
+    </SafeAreaView>
   );
 }
+

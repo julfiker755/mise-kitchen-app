@@ -1,132 +1,152 @@
-import { assets } from "@/assets";
-import { movies } from "@/components/data";
-import { AutoSliderCarousel } from "@/components/reuseable/carousel";
-import { MovieCard } from "@/components/reuseable/move-card";
-import { Button } from "@/components/ui";
+import { categories, popularRecipes, Recipe } from "@/components/data";
+import { RecipeCard } from "@/components/reuseable/recipe-card";
+import { Box, Heading } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
 import FavIcon from "@/icon/favIcon";
-import { Link, useRouter } from "expo-router";
-import React from "react";
+import { Feather } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
 import {
   Image,
-  ImageBackground,
   ScrollView,
+  StatusBar,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Home() {
+  const insets = useSafeAreaInsets();
   const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [favorites, setFavorites] = useState<Record<string, boolean>>({});
+
+  const toggleFavorite = (id: string) => {
+    setFavorites((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
   return (
-    <ScrollView style={tw`flex-1`} showsVerticalScrollIndicator={false}>
-      <View style={tw`flex-1`}>
-        <ImageBackground
-          source={require("@/assets/demo/move.png")}
-          resizeMode="cover"
-          style={tw`h-52 w-full justify-between`}
-        >
-          <View style={tw`p-4`}>
-            <View style={tw`flex-row justify-between items-center`}>
-              <Image style={tw`w-7 h-7`} source={assets.logo} />
-              <View style={tw`flex-row gap-x-3`}>
-                <Link href={"/(tabs)/explore"}>
-                  <FavIcon name="search" />
-                </Link>
-                <Link href={"/(common)/notification"}>
-                  <FavIcon name="noti" />
-                </Link>
-              </View>
-            </View>
+    <View style={[tw`flex-1`]}>
+      <StatusBar barStyle="light-content" backgroundColor="#5B7553" />
+
+      {/* Header Container */}
+      <View
+        style={[
+          tw`bg-primary px-5 pb-6 rounded-b-[25px] shadow-md`,
+          { paddingTop: Math.max(insets.top + 8, 44) },
+        ]}
+      >
+        {/* User Profile Bar */}
+        <View style={tw`flex-row items-center mb-5`}>
+          <View
+            style={tw`w-12 h-12 rounded-full bg-white items-center justify-center mr-3.5 shadow-sm`}
+          >
+            <Box>
+              <FavIcon width={30} height={30} name="user_1" />
+            </Box>
           </View>
-          <View style={tw`p-4`}>
-            <Text style={tw`text-2xl font-bold text-white`}>Dr. Strange 2</Text>
-            <Text style={tw`text-white`}>
-              Action ,SuperHero ,Science Fiction
+          <View>
+            <Text style={tw`text-white text-xl font-bold tracking-tight`}>
+              Welcome
             </Text>
-            <View style={tw`mt-1`}>
-              <Button style={tw`w-20 h-8 rounded-full`}>
-                <View style={tw`flex-row items-center`}>
-                  <FavIcon name="play" />
-                  <Text style={tw`text-white text-base`}> Play</Text>
-                </View>
-              </Button>
-            </View>
+            <Text style={tw`text-white/80 text-xs font-normal mt-0.5`}>
+              Good afternoon
+            </Text>
           </View>
-        </ImageBackground>
-        <View style={tw`px-4`}>
-          <View style={tw`flex-row justify-between mb-3 mt-4`}>
-            <Text style={tw`text-white text-lg`}>Top 10 Movies This Week</Text>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => {
-                router.push({
-                  pathname: "/(common)/all",
-                  params: { status: "top" },
-                });
-              }}
-              style={tw`z-10`}
-            >
-              <Text style={tw`text-primary text-lg`}>See all</Text>
-            </TouchableOpacity>
-          </View>
-          <AutoSliderCarousel
-            data={movies}
-            renderItem={({ item }: any) => <MovieCard item={item} />}
-            keyExtractor={(item: any) => item.id}
-            itemWidth={160}
-            interval={3000}
-          />
         </View>
-        <View style={tw`px-4 mt-3`}>
-          <View style={tw`flex-row justify-between my-3`}>
-            <Text style={tw`text-white text-lg`}>New Releases</Text>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => {
-                router.push({
-                  pathname: "/(common)/all",
-                  params: { status: "top" },
-                });
-              }}
-              style={tw`z-10`}
-            >
-              <Text style={tw`text-primary text-lg`}>See all</Text>
-            </TouchableOpacity>
+
+        {/* Search & Filter Row */}
+        <View style={tw`flex-row items-center`}>
+          <View
+            style={tw`flex-1 bg-white rounded-full flex-row items-center px-4 h-12 mr-3 shadow-sm`}
+          >
+            <Feather
+              name="search"
+              size={19}
+              color="#6B7280"
+              style={tw`mr-2.5`}
+            />
+            <TextInput
+              placeholder="Search for recipes"
+              placeholderTextColor="#9CA3AF"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              style={tw`flex-1 text-sm text-gray-800 h-full`}
+            />
           </View>
-          <AutoSliderCarousel
-            data={movies}
-            renderItem={({ item }: any) => <MovieCard item={item} />}
-            keyExtractor={(item: any) => item.id}
-            itemWidth={160}
-            interval={3000}
-          />
-        </View>
-        <View style={tw`px-4 mb-10 mt-3`}>
-          <View style={tw`flex-row justify-between my-3`}>
-            <Text style={tw`text-white text-lg`}>All Movie</Text>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => {
-                router.push({
-                  pathname: "/(common)/all",
-                  params: { status: "all" },
-                });
-              }}
-              style={tw`z-10`}
-            >
-              <Text style={tw`text-primary text-lg`}>See all</Text>
-            </TouchableOpacity>
-          </View>
-          <AutoSliderCarousel
-            data={movies}
-            renderItem={({ item }: any) => <MovieCard item={item} />}
-            keyExtractor={(item: any) => item.id}
-            itemWidth={160}
-            interval={3000}
-          />
+
+          <TouchableOpacity
+            activeOpacity={0.85}
+            style={tw`w-12 h-12 rounded-full bg-white items-center justify-center shadow-sm`}
+          >
+            <Feather name="sliders" size={18} color="#374151" />
+          </TouchableOpacity>
         </View>
       </View>
-    </ScrollView>
+
+      {/* ==========  Categories Section ========= */}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={tw`pb-10 pt-4`}
+      >
+
+        <View style={tw`mb-5`}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={tw`px-5`}
+          >
+            {categories.map((category) => (
+              <TouchableOpacity
+                key={category.id}
+                activeOpacity={0.8}
+                style={tw`bg-white rounded-full pl-1.5 pr-4 py-1.5 flex-row items-center mr-3`}
+              >
+                <Image
+                  source={{ uri: category.image }}
+                  style={tw`w-8 h-8 rounded-full mr-2.5`}
+                  resizeMode="cover"
+                />
+                <Text style={tw`text-sm font-semibold text-gray-800`}>
+                  {category.title}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* Popular Recipes Section */}
+        <View style={tw`px-5`}>
+          <View style={tw`flex-row justify-between items-center mb-4`}>
+            <Heading variant="h3"> Popular recipes</Heading>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => router.push("/(tabs)/explore")}
+            >
+              <Text style={tw`text-primary font-semibold text-sm`}>
+                See all
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={tw`flex-row flex-wrap justify-between`}>
+            {popularRecipes.map((recipe: Recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                item={recipe}
+                isFavorite={!!favorites[recipe.id]}
+                onToggleFavorite={toggleFavorite}
+              />
+            ))}
+          </View>
+        </View>
+      </ScrollView>
+    </View>
   );
 }
+

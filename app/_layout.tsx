@@ -27,7 +27,7 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ThemeProvider value={AppTheme}>
-          <SafeAreaView style={tw`flex-1 bg-[#2564eb07]`}>
+          <SafeAreaView style={tw`flex-1 bg-background`}>
             <KeyboardProvider>
               {/* Status bar color */}
               <StatusBar

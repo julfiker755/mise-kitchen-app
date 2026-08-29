@@ -1,15 +1,16 @@
 import tw from "@/components/ui/tailwind";
 import { tabIcon } from "@/icon/tab-icon";
 import {
-    BottomTabBarProps,
-    BottomTabNavigationOptions,
+  BottomTabBarProps,
+  BottomTabNavigationOptions,
 } from "@react-navigation/bottom-tabs";
 import { Tabs } from "expo-router";
 import React, { memo } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SvgXml } from "react-native-svg";
 
-type TabRouteName = "home" | "explore" | "favorite" | "profile";
+type TabRouteName = "home" | "favorite" | "account";
 
 type IconSet = {
   active: string;
@@ -27,21 +28,23 @@ interface TabButtonProps {
 
 const icons: Record<TabRouteName, IconSet> = {
   home: {
-    active: tabIcon.home,
-    inactive: tabIcon.home,
-  },
-  explore: {
-    active: tabIcon.home,
+    active: tabIcon.home_active,
     inactive: tabIcon.home,
   },
   favorite: {
-    active: tabIcon.home,
-    inactive: tabIcon.home,
+    active: tabIcon.favorite_active,
+    inactive: tabIcon.favorite,
   },
-  profile: {
-    active: tabIcon.home,
-    inactive: tabIcon.home,
+  account: {
+    active: tabIcon.account_active,
+    inactive: tabIcon.account,
   },
+};
+
+const labels: Record<TabRouteName, string> = {
+  home: "Home",
+  favorite: "Favorites",
+  account: "Account",
 };
 
 /* ============================================================
@@ -57,28 +60,34 @@ const TabButton = memo(
     accessibilityLabel,
     testID,
   }: TabButtonProps) => {
-    const iconSet = icons[routeName];
+    const iconSet = icons[routeName] || icons.home;
     const iconXml = isFocused ? iconSet.active : iconSet.inactive;
+    const label = labels[routeName] || routeName;
 
     return (
       <TouchableOpacity
+        activeOpacity={0.7}
         accessibilityRole="button"
         accessibilityState={isFocused ? { selected: true } : {}}
         accessibilityLabel={accessibilityLabel}
         testID={testID}
         onPress={onPress}
         onLongPress={onLongPress}
-        style={tw`flex-1 justify-center items-center`}
+        style={tw`flex-1 items-center justify-center py-2`}
       >
-        <View
-          style={
-            isFocused
-              ? tw`bg-white/80 rounded-full p-3`
-              : tw`rounded-full p-3 border border-slate-100/10`
-          }
-        >
-          <SvgXml xml={iconXml} width={24} height={24} />
+        <View style={tw`items-center justify-center h-6 mb-1`}>
+          <SvgXml xml={iconXml} width={22} height={22} />
         </View>
+        <Text
+          style={[
+            tw`text-[11px]`,
+            isFocused
+              ? tw`text-primary font-bold`
+              : tw`text-[#6F7470] font-medium`,
+          ]}
+        >
+          {label}
+        </Text>
       </TouchableOpacity>
     );
   },
@@ -95,9 +104,22 @@ const CustomTabBar = ({
   descriptors,
   navigation,
 }: BottomTabBarProps) => {
+  const insets = useSafeAreaInsets();
+
   return (
     <View
-      style={tw`flex-row mx-10 px-2 py-3 bg-input rounded-full absolute bottom-6 left-0 right-0 justify-around items-center`}
+      style={[
+        tw`flex-row justify-around items-center bg-[#FAF7F2] border-t border-stone-200/60`,
+        {
+          paddingBottom: Math.max(insets.bottom, 10),
+          paddingTop: 6,
+          elevation: 8,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: -2 },
+          shadowOpacity: 0.05,
+          shadowRadius: 4,
+        },
+      ]}
     >
       {state.routes.map((route, index) => {
         const isFocused = state.index === index;
@@ -154,9 +176,8 @@ const TabLayout = () => {
       tabBar={(props) => <CustomTabBar {...props} />}
     >
       <Tabs.Screen name="home" />
-      <Tabs.Screen name="explore" />
       <Tabs.Screen name="favorite" />
-      <Tabs.Screen name="profile" />
+      <Tabs.Screen name="account" />
     </Tabs>
   );
 };

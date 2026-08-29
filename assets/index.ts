@@ -1,4 +1,4 @@
 export const assets = {
-  bg: require("@/assets/bg.jpg"),
-  logo: require("@/assets/logo.png"),
+  logo: require("@/assets/home/logo.png"),
+  home_img: require("@/assets/home/home-img.png"),
 };
