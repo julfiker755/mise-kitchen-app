@@ -1,8 +1,11 @@
 import { categories, popularRecipes, Recipe } from "@/components/data";
+import { HomeFilterModal } from "@/components/modal";
 import { RecipeCard } from "@/components/reuseable/recipe-card";
 import { Box, Heading } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
+import { useGlobalState } from "@/hooks/useModalState";
 import FavIcon from "@/icon/favIcon";
+import { Insets } from "@/utils";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
@@ -11,17 +14,19 @@ import {
   ScrollView,
   StatusBar,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+const initState = {
+  isFilterModalOpen: false
+}
 
 export default function Home() {
-  const insets = useSafeAreaInsets();
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
+  const [state, setState] = useGlobalState(initState)
+
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => ({
@@ -29,6 +34,11 @@ export default function Home() {
       [id]: !prev[id],
     }));
   };
+
+  const handleSubmit = (value: any) => {
+    console.log(value)
+  }
+
 
   return (
     <View style={[tw`flex-1`]}>
@@ -38,7 +48,7 @@ export default function Home() {
       <View
         style={[
           tw`bg-primary px-5 pb-6 rounded-b-[25px] shadow-md`,
-          { paddingTop: Math.max(insets.top + 8, 44) },
+          { paddingTop: Insets.useTop(44, 8) },
         ]}
       >
         {/* User Profile Bar */}
@@ -62,7 +72,9 @@ export default function Home() {
 
         {/* Search & Filter Row */}
         <View style={tw`flex-row items-center`}>
-          <View
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => router.push("/(common)/search" as any)}
             style={tw`flex-1 bg-white rounded-full flex-row items-center px-4 h-12 mr-3 shadow-sm`}
           >
             <Feather
@@ -71,17 +83,16 @@ export default function Home() {
               color="#6B7280"
               style={tw`mr-2.5`}
             />
-            <TextInput
-              placeholder="Search for recipes"
-              placeholderTextColor="#9CA3AF"
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              style={tw`flex-1 text-sm text-gray-800 h-full`}
-            />
-          </View>
+            <Text style={tw`flex-1 text-sm text-gray-400`}>
+              Search for recipes
+            </Text>
+          </TouchableOpacity>
 
           <TouchableOpacity
             activeOpacity={0.85}
+            onPress={() => {
+              setState("isFilterModalOpen", true)
+            }}
             style={tw`w-12 h-12 rounded-full bg-white items-center justify-center shadow-sm`}
           >
             <Feather name="sliders" size={18} color="#374151" />
@@ -126,7 +137,7 @@ export default function Home() {
             <Heading variant="h3"> Popular recipes</Heading>
             <TouchableOpacity
               activeOpacity={0.7}
-              onPress={() => router.push("/(tabs)/explore")}
+            // onPress={() => router.push("/(tabs)/explore")}
             >
               <Text style={tw`text-primary font-semibold text-sm`}>
                 See all
@@ -146,6 +157,14 @@ export default function Home() {
           </View>
         </View>
       </ScrollView>
+
+      {/* Filter Bottom Sheet Modal */}
+      <HomeFilterModal
+        visible={state.isFilterModalOpen}
+        onClose={() => setState("isFilterModalOpen", false)}
+        categories={categories}
+        handleSubmit={handleSubmit}
+      />
     </View>
   );
 }
