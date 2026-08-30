@@ -43,3 +43,16 @@ export const change_sc = Yup.object().shape({
     .oneOf([Yup.ref("password")], "Passwords do not match")
     .required("Confirm password is required"),
 });
+
+
+export const changepassword_sc = Yup.object().shape({
+  current_password: Yup.string()
+    .min(6, "Current password must be at least 6 characters")
+    .required("Current password is required"),
+  password: Yup.string()
+    .min(6, "New password must be at least 6 characters")
+    .required("New password is required"),
+  c_password: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords do not match")
+    .required("Confirm password is required"),
+});
