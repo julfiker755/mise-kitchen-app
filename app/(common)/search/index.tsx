@@ -211,6 +211,12 @@ export default function SearchScreen() {
                       item={recipe}
                       isFavorite={!!favorites[recipe.id]}
                       onToggleFavorite={toggleFavorite}
+                      onPress={() =>
+                        router.push({
+                          pathname: "/(common)/details/[id]",
+                          params: { id: recipe.id },
+                        } as any)
+                      }
                     />
                   ))}
                 </View>

@@ -30,7 +30,8 @@ export const register_sc = Yup.object().shape({
 export const otp_sc = Yup.object().shape({
   otp: Yup.string()
     .matches(/^\d+$/, "OTP must be numeric")
-    .length(4, `OTP must be 4 digits`)
+    .min(4, "OTP must be at least 4 digits")
+    .max(6, "OTP must be at most 6 digits")
     .required("OTP is required"),
 });
 

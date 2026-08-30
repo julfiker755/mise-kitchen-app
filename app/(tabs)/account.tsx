@@ -1,11 +1,14 @@
 import tw from "@/components/ui/tailwind";
+import { Insets } from "@/utils";
 import React from "react";
-import { Text, View } from "react-native";
+import {
+  View
+} from "react-native";
 
-export default function Profile() {
+export default function AccountScreen() {
   return (
-    <View>
-      <Text style={tw`text-white`}>Profile</Text>
+    <View style={[tw`flex-1 bg-[#FAF7F2]`, { paddingTop: Insets.useTop(0, 0) }]}>
+
     </View>
   );
 }

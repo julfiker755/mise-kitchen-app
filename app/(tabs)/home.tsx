@@ -7,7 +7,7 @@ import { useGlobalState } from "@/hooks/useModalState";
 import FavIcon from "@/icon/favIcon";
 import { Insets } from "@/utils";
 import { Feather } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   Image,
@@ -135,24 +135,38 @@ export default function Home() {
         <View style={tw`px-5`}>
           <View style={tw`flex-row justify-between items-center mb-4`}>
             <Heading variant="h3"> Popular recipes</Heading>
-            <TouchableOpacity
-              activeOpacity={0.7}
-            // onPress={() => router.push("/(tabs)/explore")}
+            <Link
+              href={{
+                pathname: "/(common)/all-recipes" as any,
+              }}
+              asChild
             >
-              <Text style={tw`text-primary font-semibold text-sm`}>
-                See all
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.7}
+              >
+                <Text style={tw`text-primary font-semibold text-sm`}>
+                  See all
+                </Text>
+              </TouchableOpacity>
+            </Link>
           </View>
 
           <View style={tw`flex-row flex-wrap justify-between`}>
             {popularRecipes.map((recipe: Recipe) => (
-              <RecipeCard
+              <Link
                 key={recipe.id}
-                item={recipe}
-                isFavorite={!!favorites[recipe.id]}
-                onToggleFavorite={toggleFavorite}
-              />
+                href={{
+                  pathname: "/(common)/details" as any,
+                  params: { id: recipe.id },
+                }}
+                asChild
+              >
+                <RecipeCard
+                  item={recipe}
+                  isFavorite={!!favorites[recipe.id]}
+                  onToggleFavorite={toggleFavorite}
+                />
+              </Link>
             ))}
           </View>
         </View>

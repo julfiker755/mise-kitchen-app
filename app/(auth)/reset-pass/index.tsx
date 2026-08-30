@@ -1,119 +1,142 @@
+import { assets } from "@/assets";
 import { getInit } from "@/components/lib";
-import { ArrowBtn } from "@/components/reuseable/icon-btn";
 import { change_sc } from "@/components/schema";
-import { Button, FormInput, Heading } from "@/components/ui";
+import { BackBtn, FormInput } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
-import FavIcon from "@/icon/favIcon";
-import { Link } from "expo-router";
+import { Feather } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import React, { useState } from "react";
-import { Image, Modal, Text, View } from "react-native";
+import {
+  Image,
+  Modal,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ResetPassword() {
+  const router = useRouter();
   const [isSuccess, setIsSuccess] = useState(false);
-  const handlesubmit = (values: any, { resetForm }: any) => {
-    console.log("Attempt:", values);
-    setTimeout(() => {
-      resetForm();
-      setIsSuccess(true);
-    }, 2000);
+
+  const handleSubmit = (values: any, { resetForm }: any) => {
+    console.log("Reset Password Attempt:", values);
+    resetForm();
+    setIsSuccess(true);
+  };
+
+  const handleSuccessClose = () => {
+    setIsSuccess(false);
+    router.replace("/(auth)/login");
   };
 
   return (
-    <KeyboardAwareScrollView
-      bottomOffset={20}
-      contentContainerStyle={tw`flex-grow px-4`}
-    >
-      <ArrowBtn style={tw`mt-5`} />
-      <View style={tw`flex-1 justify-center px-3 mb-[70px]`}>
-        <View style={tw`mx-auto my-4`}>
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: "#FAF7F2" }]}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FAF7F2" />
+      <KeyboardAwareScrollView
+        bottomOffset={20}
+        contentContainerStyle={tw`flex-grow px-6 pb-8`}
+        showsVerticalScrollIndicator={false}
+      >
+        <BackBtn />
+        <View style={tw`items-center my-3`}>
           <Image
-            source={require("@/assets/image/logo.png")}
-            style={{ width: 170, height: 80, resizeMode: "contain" }}
+            source={assets.logo}
+            style={{ width: 260, height: 120 }}
+            resizeMode="contain"
           />
         </View>
 
-        <View>
-          <Heading variant="h1" style={tw`mb-1 text-3xl mx-auto text-primary`}>
-            Enter new password
-          </Heading>
-
-          <Heading variant="p" style={tw`mx-auto mb-6 text-center`}>
-            Set a new password. This password must be different from your
-            previous one.
-          </Heading>
+        <View style={tw`items-center mb-6`}>
+          <Text style={tw`text-[26px] font-bold text-[#1E2022] text-center mb-1.5`}>
+            Reset Password
+          </Text>
+          <Text
+            style={tw`text-[13.5px] text-[#7A7A7A] text-center max-w-[280px] leading-5`}
+          >
+            Enter a new password for your account.
+          </Text>
         </View>
 
         <Formik
           initialValues={getInit(change_sc)}
           validationSchema={change_sc}
-          onSubmit={handlesubmit}
+          onSubmit={handleSubmit}
         >
           {(formik) => (
-            <>
-              <View style={tw`w-full gap-3`}>
-                <FormInput
-                  name="password"
-                  formik={formik}
-                  placeholder="New Password"
-                  icon={<FavIcon name="password" />}
-                  secure
-                />
-                <FormInput
-                  name="c_password"
-                  formik={formik}
-                  placeholder="Confirm Password"
-                  icon={<FavIcon name="password" />}
-                  secure
-                />
-                <Button
-                  label="Change password"
-                  style={tw`rounded-full h-11`}
-                  onPress={formik.handleSubmit}
-                />
-              </View>
-            </>
+            <View style={tw`w-full`}>
+              <FormInput
+                name="password"
+                formik={formik}
+                label="Password"
+                placeholder="Enter new password"
+                secure
+                containerStyle={tw`mb-4`}
+              />
+
+              <FormInput
+                name="c_password"
+                formik={formik}
+                label="Confirm password"
+                placeholder="Enter the password again"
+                secure
+                containerStyle={tw`mb-6`}
+              />
+
+              <TouchableOpacity
+                activeOpacity={0.85}
+                onPress={() => formik.handleSubmit()}
+                style={tw`bg-primary rounded-full h-[52px] items-center justify-center shadow-sm`}
+              >
+                <Text style={tw`text-white font-semibold text-[16px]`}>
+                  Update password
+                </Text>
+              </TouchableOpacity>
+            </View>
           )}
         </Formik>
-        {/* --- success modal ---- */}
+
+        {/* ============= Success Modal ========== */}
         <Modal
           animationType="fade"
           transparent={true}
           visible={isSuccess}
-          onRequestClose={() => {
-            // Android back button press handler (optional)
-          }}
+          onRequestClose={handleSuccessClose}
         >
           <View style={tw`flex-1 justify-center items-center bg-black/50 p-6`}>
             <View
-              style={tw`bg-[#1f222b] p-8 rounded-2xl w-full max-w-sm items-center shadow-xl`}
+              style={tw`bg-white p-6 rounded-3xl w-full max-w-sm items-center shadow-xl`}
             >
               <View
-                style={tw`w-16 h-16 rounded-full bg-success justify-center items-center`}
+                style={tw`w-16 h-16 rounded-full bg-[#EBF3E8] justify-center items-center mb-4`}
               >
-                <FavIcon width={70} height={70} name="success" />
+                <Feather name="check" size={32} color="#5B7553" />
               </View>
 
-              <Text style={tw`text-2xl text-white mt-4 mb-2`}>
-                You&apos;re All Set!
+              <Text style={tw`text-[20px] font-bold text-[#1E2022] mb-2`}>
+                Password Reset!
               </Text>
 
-              <Text style={tw`text-base text-white text-center mb-6`}>
-                Your password has been changed successfully!
+              <Text style={tw`text-[14px] text-[#7A7A7A] text-center mb-6 leading-5`}>
+                Your password has been changed successfully. You can now login with your new password.
               </Text>
 
-              <Link href={"/(auth)/login"} asChild>
-                <Button style={tw`rounded-full px-10`}>
-                  <Text style={tw`text-lg text-white font-semibold`}>
-                    Back to login
-                  </Text>
-                </Button>
-              </Link>
+              <TouchableOpacity
+                activeOpacity={0.85}
+                onPress={handleSuccessClose}
+                style={tw`w-full bg-primary rounded-full h-[48px] items-center justify-center`}
+              >
+                <Text style={tw`text-white font-semibold text-[15px]`}>
+                  Back to login
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }

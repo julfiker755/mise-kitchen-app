@@ -1,19 +1,26 @@
+import { assets } from "@/assets";
 import { getInit } from "@/components/lib";
-import { ArrowBtn } from "@/components/reuseable/icon-btn";
 import { email_sc } from "@/components/schema";
-import { Button, FormInput, Heading } from "@/components/ui";
+import { BackBtn, FormInput } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
-import FavIcon from "@/icon/favIcon";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
-import { Image, View } from "react-native";
+import {
+  Image,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ForgotPassword() {
   const router = useRouter();
-  const handlesubmit = (values: any, { resetForm }: any) => {
-    console.log("Login Attempt:", values);
+
+  const handleSubmit = (values: any) => {
+    console.log("Forgot Password Attempt:", values);
     router.push({
       pathname: "/(auth)/otp",
       params: { email: values.email },
@@ -21,54 +28,62 @@ export default function ForgotPassword() {
   };
 
   return (
-    <KeyboardAwareScrollView
-      bottomOffset={20}
-      contentContainerStyle={tw`flex-grow px-4`}
-    >
-      <ArrowBtn style={tw`mt-5`} />
-      <View style={tw`flex-1 justify-center mb-[70px]`}>
-        <View style={tw`mx-auto my-4`}>
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: "#FAF7F2" }]}>
+      <StatusBar barStyle="dark-content" backgroundColor="#FAF7F2" />
+      <KeyboardAwareScrollView
+        bottomOffset={20}
+        contentContainerStyle={tw`flex-grow px-6 pb-8`}
+        showsVerticalScrollIndicator={false}
+      >
+        <BackBtn />
+        <View style={tw`items-center my-3`}>
           <Image
-            source={require("@/assets/image/logo.png")}
-            style={{ width: 170, height: 80, resizeMode: "contain" }}
+            source={assets.logo}
+            style={{ width: 260, height: 120 }}
+            resizeMode="contain"
           />
         </View>
-
-        <View style={tw`py-2`}>
-          <Heading variant="h1" style={tw`mb-1 text-3xl mx-auto text-primary`}>
-            Forgot Password ?
-          </Heading>
-
-          <Heading variant="p" style={tw`mx-auto mb-6 text-center`}>
-            Enter your email address that you provided during sign up. We will
-            send you a 6 digit code through that email.
-          </Heading>
+        <View style={tw`items-center mb-6`}>
+          <Text style={tw`text-[26px] font-bold text-[#1E2022] text-center mb-1.5`}>
+            Forgot password ?
+          </Text>
+          <Text
+            style={tw`text-[13.5px] text-[#7A7A7A] text-center max-w-[310px] leading-5`}
+          >
+            Enter the email address that you used to create your account. We will send an OTP to reset your password.
+          </Text>
         </View>
 
         <Formik
           initialValues={getInit(email_sc)}
           validationSchema={email_sc}
-          onSubmit={handlesubmit}
+          onSubmit={handleSubmit}
         >
           {(formik) => (
-            <>
-              <View style={tw`w-full gap-3`}>
-                <FormInput
-                  name="email"
-                  formik={formik}
-                  placeholder="Email"
-                  icon={<FavIcon name="email" />}
-                />
-                <Button
-                  label="Send"
-                  style={tw`rounded-full h-11`}
-                  onPress={formik.handleSubmit}
-                />
-              </View>
-            </>
+            <View style={tw`w-full`}>
+              <FormInput
+                name="email"
+                formik={formik}
+                label="Email"
+                placeholder="Enter your email address"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                containerStyle={tw`mb-6`}
+              />
+
+              <TouchableOpacity
+                activeOpacity={0.85}
+                onPress={() => formik.handleSubmit()}
+                style={tw`bg-primary rounded-full h-[52px] items-center justify-center shadow-sm`}
+              >
+                <Text style={tw`text-white font-semibold text-[16px]`}>
+                  Get OTP
+                </Text>
+              </TouchableOpacity>
+            </View>
           )}
         </Formik>
-      </View>
-    </KeyboardAwareScrollView>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
