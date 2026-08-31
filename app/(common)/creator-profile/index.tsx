@@ -131,7 +131,6 @@ const ProfileHeader = ({ item }: { item: any }) => {
         </Text>
       </View>
     </View>
-
   );
 }
 

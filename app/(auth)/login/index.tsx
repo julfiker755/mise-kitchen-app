@@ -1,8 +1,8 @@
 import { assets } from "@/assets";
-import { getInit } from "@/components/lib";
 import { Login_sc } from "@/components/schema";
 import { BackBtn, FormInput } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
+import { getInit } from "@/utils";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { Checkbox } from "expo-checkbox";
 import { useRouter } from "expo-router";
@@ -23,9 +23,17 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = (values: any, { resetForm }: any) => {
-    console.log("Login Attempt:", values);
-    router.push("/(tabs)/home");
-    resetForm();
+    if (values.email === "creator@gmail.com") {
+      router.push("/creator");
+      resetForm();
+
+    } else {
+      console.log("Login Attempt:", values);
+      router.push("/(tabs)/home");
+      resetForm();
+
+    }
+
   };
 
   return (

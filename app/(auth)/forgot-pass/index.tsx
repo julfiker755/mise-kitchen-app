@@ -1,8 +1,8 @@
 import { assets } from "@/assets";
-import { getInit } from "@/components/lib";
 import { email_sc } from "@/components/schema";
 import { BackBtn, FormInput } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
+import { getInit } from "@/utils";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import React from "react";

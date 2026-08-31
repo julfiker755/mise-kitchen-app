@@ -6,7 +6,6 @@ import tw from "@/components/ui/tailwind";
 import useUserStore from "@/zustand/useAuthStore";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import React, { useState } from "react";
 import {
@@ -29,7 +28,6 @@ const AccountSettingsSchema = Yup.object().shape({
 });
 
 const AccountSettings = () => {
-    const router = useRouter();
     const { user, setUser } = useUserStore();
     const [avatar, setAvatar] = useState({
         url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop",

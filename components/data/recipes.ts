@@ -26,6 +26,7 @@ export interface Recipe {
   author?: RecipeAuthor;
   ingredients?: string[];
   instructions?: string[];
+  views?: string;
 }
 
 export const categories: Category[] = [
@@ -366,3 +367,17 @@ export const popularRecipes: Recipe[] = [
     isFavorite: false,
   },
 ];
+
+export const topHitRecipes: Recipe[] = [
+  {
+    id: "3",
+    title: "Zesty Lemon Chicken",
+    image: "https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop",
+    cookingTime: "20 min",
+    servings: "4",
+    views: "12.5k",
+    isSpicy: false,
+    isFavorite: false,
+  },
+];
+

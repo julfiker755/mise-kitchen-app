@@ -24,7 +24,7 @@ const sizes = {
   default: tw`h-10 px-4`,
   sm: tw`h-8 px-3`,
   lg: tw`h-12 px-6`,
-  icon: tw`h-10 w-10 p-2`,
+  icon: tw`h-10 w-10 p-2 rounded-full`,
   "icon-sm": tw`h-8 w-8 p-1.5`,
   "icon-lg": tw`h-12 w-12 p-3`,
 };

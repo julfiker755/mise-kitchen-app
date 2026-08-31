@@ -1,6 +1,6 @@
 import RecipeDetailsScreen from '@/components/common/basic/details';
 import React from 'react';
 
-export default function UserDetails() {
-    return <RecipeDetailsScreen type="user" />;
+export default function DetailsScreen() {
+    return <RecipeDetailsScreen type="creator" />;
 }

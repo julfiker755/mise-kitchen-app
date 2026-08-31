@@ -2,6 +2,7 @@ import { assets } from "@/assets";
 import { otp_sc } from "@/components/schema";
 import { BackBtn, FormInput } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
+import { getInit } from "@/utils";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
@@ -68,7 +69,7 @@ export default function OtpScreen() {
 
         {/* Form */}
         <Formik
-          initialValues={{ otp: "" }}
+          initialValues={getInit(otp_sc)}
           validationSchema={otp_sc}
           onSubmit={handleSubmit}
         >

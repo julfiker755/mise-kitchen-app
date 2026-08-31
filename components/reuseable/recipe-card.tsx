@@ -60,3 +60,6 @@ export const RecipeCard = forwardRef<View, RecipeCardProps>(
     );
   }
 );
+
+RecipeCard.displayName = "RecipeCard";
+

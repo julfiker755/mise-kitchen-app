@@ -227,7 +227,7 @@ export default function SearchScreen() {
                     No recipes found
                   </Text>
                   <Text style={tw`text-[#9CA3AF] text-sm text-center px-6`}>
-                    We couldn't find any recipes matching "{searchQuery}". Try searching for something else!
+                    {`We couldn't find any recipes matching "${searchQuery}". Try searching for something else!`}
                   </Text>
                 </View>
               )}

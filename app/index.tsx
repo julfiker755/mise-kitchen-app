@@ -45,7 +45,7 @@ export default function Index() {
           style={tw`rounded-full h-12`}
         >
           <Text style={tw`text-white text-base font-semibold mr-2`}>
-            Let's browse
+            Let&apos;s browse
           </Text>
           <Feather name="arrow-right" size={20} color="#FFFFFF" />
         </Button>
