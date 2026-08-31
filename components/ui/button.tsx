@@ -42,6 +42,7 @@ interface ButtonProps {
   disabled?: boolean;
   isLoading?: boolean;
   label?: string;
+  activeOpacity?: number
 }
 
 const ButtonComponent: React.FC<ButtonProps> = ({
@@ -54,6 +55,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
   disabled = false,
   isLoading = false,
   label,
+  activeOpacity = 0.8
 }) => {
   const isButtonDisabled = disabled || isLoading;
 
@@ -61,6 +63,7 @@ const ButtonComponent: React.FC<ButtonProps> = ({
     <TouchableOpacity
       onPress={onPress}
       disabled={isButtonDisabled}
+      activeOpacity={activeOpacity}
       style={[
         tw`flex-row items-center justify-center rounded-md`,
         variants[variant],

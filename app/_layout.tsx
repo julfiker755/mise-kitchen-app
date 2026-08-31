@@ -5,6 +5,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import "react-native-reanimated";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { Toaster } from 'sonner-native';
 import tw from "../components/ui/tailwind";
 
 export const unstable_settings = {
@@ -51,6 +52,7 @@ export default function RootLayout() {
             </KeyboardProvider>
           </SafeAreaView>
         </ThemeProvider>
+        <Toaster />
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

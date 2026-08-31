@@ -1,8 +1,11 @@
-import BackBtn from "@/components/ui/back-btn";
+import NavHeading from "@/components/common/account/nav-heading";
+import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/ui/from-input";
+import sonner from "@/components/ui/sonner";
 import tw from "@/components/ui/tailwind";
 import useUserStore from "@/zustand/useAuthStore";
 import { Feather } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import React, { useState } from "react";
@@ -28,9 +31,10 @@ const AccountSettingsSchema = Yup.object().shape({
 const AccountSettings = () => {
     const router = useRouter();
     const { user, setUser } = useUserStore();
-    const [avatarUri, setAvatarUri] = useState(
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop"
-    );
+    const [avatar, setAvatar] = useState({
+        url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop",
+        img: null
+    });
 
     const initialValues = {
         name: user?.name || "Md. Abid Hasan",
@@ -42,33 +46,49 @@ const AccountSettings = () => {
             name: values.name,
             email: values.email,
         });
-        Alert.alert("Success", "Account settings updated successfully!", [
-            { text: "OK", onPress: () => router.back() },
-        ]);
+        console.log({
+            values,
+            img: avatar.img,
+        })
+        sonner.success("Account settings updated successfully!")
+
     };
 
-    const handleChangeAvatar = () => {
-        Alert.alert("Change Photo", "Profile photo update options", [
-            { text: "Take Photo", onPress: () => { } },
-            { text: "Choose from Library", onPress: () => { } },
-            { text: "Cancel", style: "cancel" },
-        ]);
+    const handleChangeAvatar = async () => {
+        try {
+            const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+            if (!permissionResult.granted) {
+                Alert.alert(
+                    "Permission Denied",
+                    "You need to allow media library permissions to change your profile picture."
+                );
+                return;
+            }
+
+            const result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ['images'],
+                allowsEditing: true,
+                aspect: [1, 1],
+                quality: 0.8,
+            });
+
+            console.log("ImagePicker Result:", result);
+
+            if (!result.canceled && result.assets && result.assets.length > 0) {
+                const selectedUri = result.assets[0].uri;
+                console.log("Selected Image URI:", selectedUri);
+                setAvatar({ url: selectedUri, img: result.assets[0] as any });
+            }
+        } catch (error) {
+            console.log("Error picking image:", error);
+        }
     };
 
     return (
         <SafeAreaView style={[tw`flex-1`, { backgroundColor: "#FAF7F2" }]}>
             <StatusBar barStyle="dark-content" backgroundColor="#FAF7F2" />
-
-            {/* Header */}
-            <View style={tw`flex-row items-center justify-between px-5 pt-2 pb-4`}>
-                <BackBtn />
-                <Text
-                    style={tw`text-[#1F2937] text-xl font-bold tracking-tight text-center`}
-                >
-                    Account settings
-                </Text>
-                <View style={tw`w-10`} />
-            </View>
+            <NavHeading title="Account settings" />
 
             <Formik
                 initialValues={initialValues}
@@ -86,7 +106,7 @@ const AccountSettings = () => {
                             <View style={tw`items-center my-6`}>
                                 <View style={tw`relative`}>
                                     <Image
-                                        source={{ uri: avatarUri }}
+                                        source={{ uri: avatar.url }}
                                         style={tw`w-28 h-28 rounded-full`}
                                         resizeMode="cover"
                                     />
@@ -99,8 +119,6 @@ const AccountSettings = () => {
                                     </TouchableOpacity>
                                 </View>
                             </View>
-
-                            {/* Form Input Fields */}
                             <View style={tw`w-full gap-4 mt-2`}>
                                 <FormInput
                                     name="name"
@@ -120,18 +138,17 @@ const AccountSettings = () => {
                             </View>
                         </View>
 
-                        {/* Save Changes Button */}
-                        <View style={tw`w-full pt-6`}>
-                            <TouchableOpacity
-                                activeOpacity={0.85}
-                                onPress={() => formik.handleSubmit()}
-                                style={tw`bg-primary rounded-full h-[52px] items-center justify-center shadow-sm`}
-                            >
-                                <Text style={tw`text-white font-semibold text-[16px]`}>
-                                    Save changes
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                        <Button
+                            onPress={() => {
+                                formik.handleSubmit()
+
+                            }}
+                            style={tw`rounded-full w-full mt-6 h-[52px] shadow-sm`}
+                        >
+                            <Text style={tw`text-white font-semibold text-[16px]`}>
+                                Save changes
+                            </Text>
+                        </Button>
                     </KeyboardAwareScrollView>
                 )}
             </Formik>

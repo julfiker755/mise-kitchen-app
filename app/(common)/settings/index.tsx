@@ -48,7 +48,9 @@ export default function SettingsScreen() {
                         title="About us"
                         subtitle="See our about us here"
                         icon={<Feather name="settings" size={19} color="#1E2022" />}
-                        onPress={() => { }}
+                        onPress={() => {
+                            router.push("/(common)/settings/about-us");
+                        }}
                     />
 
                     <MenuItem
@@ -61,7 +63,9 @@ export default function SettingsScreen() {
                                 color="#1E2022"
                             />
                         }
-                        onPress={() => { }}
+                        onPress={() => {
+                            router.push("/(common)/settings/faq");
+                        }}
                     />
                     <MenuItem
                         title="Privacy policy"
@@ -73,7 +77,9 @@ export default function SettingsScreen() {
                                 color="#1E2022"
                             />
                         }
-                        onPress={() => { }}
+                        onPress={() => {
+                            router.push("/(common)/settings/privacy-policy");
+                        }}
                     />
                 </View>
             </ScrollView>

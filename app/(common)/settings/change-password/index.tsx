@@ -1,6 +1,7 @@
+import NavHeading from "@/components/common/account/nav-heading";
 import { changepassword_sc } from "@/components/schema";
 import { Box } from "@/components/ui";
-import BackBtn from "@/components/ui/back-btn";
+import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/ui/from-input";
 import tw from "@/components/ui/tailwind";
 import FavIcon from "@/icon/favIcon";
@@ -10,7 +11,6 @@ import React from "react";
 import {
     StatusBar,
     Text,
-    TouchableOpacity,
     View
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
@@ -37,17 +37,7 @@ const ChangePassword = () => {
         <SafeAreaView style={[tw`flex-1`, { backgroundColor: "#FAF7F2" }]}>
             <StatusBar barStyle="dark-content" backgroundColor="#FAF7F2" />
 
-            {/* Header */}
-            <View style={tw`flex-row items-center justify-between px-5 pt-2 pb-4`}>
-                <BackBtn />
-                <Text
-                    style={tw`text-[#1F2937] text-xl font-bold tracking-tight text-center`}
-                >
-                    Change password
-                </Text>
-                <View style={tw`w-10`} />
-            </View>
-
+            <NavHeading title="Change password" />
             <Formik
                 initialValues={initialValues}
                 validationSchema={changepassword_sc}
@@ -90,17 +80,14 @@ const ChangePassword = () => {
                                 />
                             </View>
                         </View>
-                        <View style={tw`w-full pt-6`}>
-                            <TouchableOpacity
-                                activeOpacity={0.85}
-                                onPress={() => formik.handleSubmit()}
-                                style={tw`bg-primary rounded-full h-[52px] items-center justify-center shadow-sm`}
-                            >
-                                <Text style={tw`text-white font-semibold text-[16px]`}>
-                                    Update password
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                        <Button
+                            onPress={() => formik.handleSubmit()}
+                            style={tw`rounded-full w-full mt-6 h-[52px] shadow-sm`}
+                        >
+                            <Text style={tw`text-white font-semibold text-[16px]`}>
+                                Update password
+                            </Text>
+                        </Button>
                     </KeyboardAwareScrollView>
                 )}
             </Formik>
