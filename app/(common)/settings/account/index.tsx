@@ -136,7 +136,7 @@ const AccountSettings = () => {
                                     autoCapitalize="none"
                                 />
                             </View>
-                        </View>
+                        </View >
 
                         <Button
                             onPress={() => {
@@ -149,10 +149,10 @@ const AccountSettings = () => {
                                 Save changes
                             </Text>
                         </Button>
-                    </KeyboardAwareScrollView>
+                    </KeyboardAwareScrollView >
                 )}
-            </Formik>
-        </SafeAreaView>
+            </Formik >
+        </SafeAreaView >
     );
 };
 
