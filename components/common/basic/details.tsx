@@ -1,5 +1,5 @@
 import { defaultRecipeDetails, popularRecipes, Recipe } from "@/components/data";
-import { Button } from "@/components/ui";
+import { Button, Heading } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
 import FavIcon from "@/icon/favIcon";
 import { Insets, window } from "@/utils";
@@ -19,13 +19,25 @@ import StatsGrid from "./stats-grid";
 
 const SCREEN_WIDTH = window.width;
 
+
+
+
+const ingredientsData = [
+    '2 packs fresh or dried ramen noodles.',
+    '8 to 10 medium shrimp, peeled and deveined.',
+    '2 large eggs',
+    '1 cup snow peas or sugar snap peas',
+    '2 tablespoons chopped chives or green onions',
+    '1 teaspoon black sesame seeds',
+];
+
+
+
 export default function RecipeDetailsScreen({ type }: {
     type?: "creator" | "user"
 }) {
     const router = useRouter();
     const { id } = useLocalSearchParams<{ id?: string }>();
-
-    // Find recipe or fallback to first popular recipe with default details
     const recipe: Recipe = useMemo(() => {
         const found = popularRecipes.find((r) => r.id === id);
         if (!found) {
@@ -48,12 +60,9 @@ export default function RecipeDetailsScreen({ type }: {
         };
     }, [id]);
 
-    const [activeImageIndex, setActiveImageIndex] = useState(0);
     const [isFavorite, setIsFavorite] = useState(recipe.isFavorite ?? false);
     const [showInstructions, setShowInstructions] = useState(true);
-    const [checkedIngredients, setCheckedIngredients] = useState<Record<number, boolean>>({});
 
-    const images = recipe.images && recipe.images.length > 0 ? recipe.images : [recipe.image];
 
 
 
@@ -61,12 +70,6 @@ export default function RecipeDetailsScreen({ type }: {
         setIsFavorite((prev) => !prev);
     };
 
-    const toggleIngredient = (index: number) => {
-        setCheckedIngredients((prev) => ({
-            ...prev,
-            [index]: !prev[index],
-        }));
-    };
 
 
 
@@ -209,9 +212,8 @@ export default function RecipeDetailsScreen({ type }: {
                     </View>
 
 
-                    {/* Recipe By (Author) Section */}
-                    <View style={tw`mb-6`}>
-                        <Text style={tw`text-xs font-semibold text-[#6B7280] mb-2.5`}>
+                    <View style={tw`my-6`}>
+                        <Text style={tw`text-sm font-semibold text-[#6B7280] mb-2.5`}>
                             Recipe by
                         </Text>
                         <View style={tw`flex-row items-center justify-between`}>
@@ -231,85 +233,46 @@ export default function RecipeDetailsScreen({ type }: {
                                 </View>
                             </View>
 
+
                             <Link
                                 href={{
-                                    pathname: "/(common)/creator-profile" as any,
+                                    pathname: "/(common)/creator-profile",
                                     params: { id: "45" }
                                 }}
                                 asChild>
-                                <TouchableOpacity
-                                    activeOpacity={0.7}
-                                    style={tw`bg-white border border-[#E5E0D8] px-3.5 py-1.5 rounded-full shadow-sm`}
-                                >
+                                <Button variant="secondary" style={tw`text-lg`}>
                                     <Text style={tw`text-xs font-semibold text-[#4B5563]`}>
                                         See all recipes
                                     </Text>
-                                </TouchableOpacity>
+
+
+                                </Button>
                             </Link>
                         </View>
                     </View>
 
-                    {/* Ingredients Section */}
                     <View style={tw`mb-6`}>
-                        <Text style={tw`text-base font-bold text-[#1F2937] mb-3.5`}>
-                            Ingredients
-                        </Text>
+                        <Heading variant="h3" style={tw`mb-3`}> Ingredients</Heading>
 
-                        <View style={tw`gap-3`}>
-                            {recipe.ingredients?.map((ingredient, index) => {
-                                const isChecked = !!checkedIngredients[index];
-                                return (
-                                    <TouchableOpacity
-                                        key={`ingredient-${index}`}
-                                        activeOpacity={0.7}
-                                        onPress={() => toggleIngredient(index)}
-                                        style={tw`flex-row items-center`}
-                                    >
-                                        {/* Checkbox Box */}
-                                        <View
-                                            style={[
-                                                tw`w-5 h-5 rounded-md border items-center justify-center mr-3`,
-                                                isChecked
-                                                    ? tw`bg-primary border-primary`
-                                                    : tw`bg-white border-[#D1D5DB]`,
-                                            ]}
-                                        >
-                                            {isChecked && (
-                                                <Feather name="check" size={13} color="#FFFFFF" />
-                                            )}
-                                        </View>
-
-                                        {/* Ingredient Text with Number */}
-                                        <Text
-                                            style={[
-                                                tw`flex-1 text-[13.5px] leading-relaxed`,
-                                                isChecked
-                                                    ? tw`text-[#9CA3AF] line-through`
-                                                    : tw`text-[#374151] font-normal`,
-                                            ]}
-                                        >
-                                            {`${index + 1}.  ${ingredient}`}
-                                        </Text>
-                                    </TouchableOpacity>
-                                );
-                            })}
-                        </View>
+                        {ingredientsData.map((ingredient, index) => (
+                            <View key={index} style={tw`flex-row items-center mb-3`}>
+                                <Text style={tw`text-base text-[#374151]`}>{index + 1}.{" "}</Text>
+                                <Text style={tw`text-base text-[#374151]`}>{ingredient}</Text>
+                            </View>
+                        ))}
                     </View>
-
-                    {/* Instructions Section Card */}
                     {showInstructions && (
-                        <View style={tw`bg-[#F2EFE9] rounded-2xl p-4.5 mb-4 border border-[#E8E4DB]`}>
-                            <Text style={tw`text-[15px] font-bold text-[#1F2937] mb-3`}>
-                                Instructions
-                            </Text>
+                        <View style={tw`bg-white rounded-2xl p-4.5 mb-4 border border-[#E8E4DB]`}>
+                            <Heading variant="h3" style={tw`mb-3`}> Instructions</Heading>
+
 
                             <View style={tw`gap-3`}>
                                 {recipe.instructions?.map((instruction, index) => (
                                     <View key={`instruction-${index}`} style={tw`flex-row items-start`}>
-                                        <Text style={tw`text-[13px] font-semibold text-[#1F2937] w-5 mt-0.5`}>
+                                        <Text style={tw`text-sm font-semibold text-[#1F2937] w-5 mt-0.5`}>
                                             {index + 1}.
                                         </Text>
-                                        <Text style={tw`flex-1 text-[13px] text-[#4B5563] leading-5 font-normal`}>
+                                        <Text style={tw`flex-1 text-sm text-[#4B5563] leading-5 font-normal`}>
                                             {instruction}
                                         </Text>
                                     </View>
@@ -318,25 +281,28 @@ export default function RecipeDetailsScreen({ type }: {
                         </View>
                     )}
 
-                    {/* Hide/Show Instructions Toggle Button */}
-                    <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => setShowInstructions((prev) => !prev)}
-                        style={tw`bg-white border border-[#E5E0D8] rounded-full py-2.5 px-5 self-center flex-row items-center shadow-sm mb-6`}
-                    >
-                        <Text style={tw`text-xs font-semibold text-[#4B5563] mr-1.5`}>
-                            {showInstructions ? "Hide instructions" : "Show instructions"}
-                        </Text>
-                        <Feather
-                            name={showInstructions ? "chevron-up" : "chevron-down"}
-                            size={16}
-                            color="#4B5563"
-                        />
-                    </TouchableOpacity>
+                    {type == "user" && (
+                        <Button variant="secondary" style={tw`text-lg h-11 border-none shadow-none bg-white`} onPress={() => setShowInstructions((prev) => !prev)}>
+                            <Text style={tw`text-sm mr-1 font-semibold text-[#4B5563]`}>
+                                {showInstructions ? "Hide instructions" : "Show instructions"}
+                            </Text>
+                            <Feather
+                                name={showInstructions ? "chevron-up" : "chevron-down"}
+                                size={20}
+                                color="#4B5563"
+                            />
+                        </Button>
+                    )}
+
                 </View>
             </ScrollView>
 
-            {/* Floating Bottom Action CTA "Let's cook" */}
+            <Button style={[
+                tw`absolute bottom-0 left-0 right-0 bg-[#FAF7F2]/95 px-5 pt-3 border-t border-[#EBE6DC]`,
+                { paddingBottom: Insets.useBottom(16, 8) },
+            ]}>
+
+            </Button>
             <View
                 style={[
                     tw`absolute bottom-0 left-0 right-0 bg-[#FAF7F2]/95 px-5 pt-3 border-t border-[#EBE6DC]`,

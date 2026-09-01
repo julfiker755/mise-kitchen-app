@@ -7,7 +7,7 @@ const variants = {
   default: tw`bg-primary`,
   destructive: tw`bg-red-600`,
   success: tw`bg-[#218838]`,
-  secondary: tw`bg-[#D9D9D9]`,
+  secondary: tw`border border-[#E6E4DF] rounded-full`,
   link: tw`bg-transparent`,
 };
 
@@ -15,7 +15,7 @@ const textColors = {
   default: tw`text-white`,
   destructive: tw`text-white`,
   success: tw`text-white`,
-  secondary: tw`text-black`,
+  secondary: tw`text-primary`,
   link: tw`text-[#3D3D3D]`,
 };
 
