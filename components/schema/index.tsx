@@ -56,3 +56,34 @@ export const changepassword_sc = Yup.object().shape({
     .oneOf([Yup.ref("password")], "Passwords do not match")
     .required("Confirm password is required"),
 });
+
+export const recipe_step_sc = Yup.object().shape({
+  id: Yup.string().optional(),
+  title: Yup.string().required("Instruction title is required"),
+  description: Yup.string().required("Instruction details are required"),
+  image: Yup.string().optional(),
+});
+
+export const recipe_sc = Yup.object().shape({
+  name: Yup.string().required("Recipe name is required"),
+  description: Yup.string().required("Recipe description is required"),
+  category: Yup.string().required("Please select a category"),
+  cookingTime: Yup.string().required("Cooking time is required"),
+  servings: Yup.string().required("Please select servings"),
+  cuisine: Yup.string().required("Please select cuisine"),
+  mainImage: Yup.string().optional(),
+  galleryImages: Yup.array().of(Yup.string()).optional(),
+  ingredients: Yup.array()
+    .of(Yup.string())
+    .min(1, "Please add at least one ingredient"),
+  instructions: Yup.array()
+    .of(
+      Yup.object().shape({
+        id: Yup.string().optional(),
+        title: Yup.string().required("Step title is required"),
+        description: Yup.string().required("Step description is required"),
+        image: Yup.string().optional(),
+      })
+    )
+    .min(1, "Please add at least one instruction step"),
+});

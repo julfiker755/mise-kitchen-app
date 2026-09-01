@@ -1,6 +1,7 @@
 import { defaultRecipeDetails, popularRecipes, Recipe } from "@/components/data";
 import { Button, Heading } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
+import useConfirmation from "@/hooks/use-confirmation";
 import FavIcon from "@/icon/favIcon";
 import { Insets, window } from "@/utils";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -37,6 +38,7 @@ export default function RecipeDetailsScreen({ type }: {
     type?: "creator" | "user"
 }) {
     const router = useRouter();
+    const { confirm } = useConfirmation();
     const { id } = useLocalSearchParams<{ id?: string }>();
     const recipe: Recipe = useMemo(() => {
         const found = popularRecipes.find((r) => r.id === id);
@@ -63,8 +65,17 @@ export default function RecipeDetailsScreen({ type }: {
     const [isFavorite, setIsFavorite] = useState(recipe.isFavorite ?? false);
     const [showInstructions, setShowInstructions] = useState(true);
 
+    const handleDeleteRecipe = async () => {
+        const isConfirmed = await confirm({
+            title: "Delete recipe ?",
+            description:
+                "After deleting this recipe will no longer available in this application.",
+        });
 
-
+        if (isConfirmed) {
+            console.log("Hi")
+        }
+    };
 
     const toggleFavorite = () => {
         setIsFavorite((prev) => !prev);
@@ -104,14 +115,25 @@ export default function RecipeDetailsScreen({ type }: {
 
                         {type === "creator" ? (
                             <View style={tw`flex-row items-center gap-2.5`}>
-                                <Button size="icon" style={tw`bg-white`}>
+                                <Button
+                                    size="icon"
+                                    style={tw`bg-white`}
+                                    onPress={() => {
+                                        router.push({
+                                            pathname: "/creator/recipe-edit" as any,
+                                            params: { id: recipe.id },
+                                        });
+                                    }}
+                                >
                                     <FavIcon name="edit" />
                                 </Button>
-                                <Button size="icon" style={tw`bg-white`}>
+                                <Button
+                                    size="icon"
+                                    style={tw`bg-white`}
+                                    onPress={handleDeleteRecipe}
+                                >
                                     <FavIcon name="delete" />
                                 </Button>
-
-
                             </View>
                         ) : (
                             <Button size="icon"
@@ -188,7 +210,7 @@ export default function RecipeDetailsScreen({ type }: {
                             </Link>
                         </View>
 
-                        {type == "creator" && (
+                        {type === "creator" && (
                             <View style={tw`w-[48%]`}>
                                 <Link
                                     href={{
@@ -281,7 +303,7 @@ export default function RecipeDetailsScreen({ type }: {
                         </View>
                     )}
 
-                    {type == "user" && (
+                    {type === "user" && (
                         <Button variant="secondary" style={tw`text-lg h-11 border-none shadow-none bg-white`} onPress={() => setShowInstructions((prev) => !prev)}>
                             <Text style={tw`text-sm mr-1 font-semibold text-[#4B5563]`}>
                                 {showInstructions ? "Hide instructions" : "Show instructions"}
