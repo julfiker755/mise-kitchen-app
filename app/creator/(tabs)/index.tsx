@@ -2,7 +2,7 @@ import StatsGrid from "@/components/common/basic/stats-grid";
 import ViewsPreferencesChart from "@/components/common/creator/chart";
 import { topHitRecipes } from "@/components/data";
 import { TopHitCard } from "@/components/reuseable/top-hit-card";
-import { Box } from "@/components/ui";
+import { Button } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
 import { Insets } from "@/utils";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,7 +13,6 @@ import {
     ScrollView,
     StatusBar,
     Text,
-    TouchableOpacity,
     View
 } from "react-native";
 
@@ -62,16 +61,9 @@ export default function CreatorScreen() {
                         </View>
                     </View>
 
-                    <TouchableOpacity
-                        activeOpacity={0.8}
-                        onPress={() => {
-                            // Add Recipe / Creator action
-                        }}
-                    >
-                        <Box style={tw`size-11 rounded-full bg-[#5B7553] items-center justify-center`}>
-                            <Ionicons name="add" size={24} color="#FFFFFF" />
-                        </Box>
-                    </TouchableOpacity>
+                    <Button size="icon" style={tw`size-11`} onPress={() => router.push("/creator/recipe-store")}>
+                        <Ionicons name="add" size={24} color="#FFFFFF" />
+                    </Button>
                 </View>
 
                 <StatsGrid

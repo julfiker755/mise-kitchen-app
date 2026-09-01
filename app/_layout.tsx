@@ -1,3 +1,4 @@
+import { ConfirmDialogProvider } from "@/components/modal/confirm-dialog";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -28,29 +29,31 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ThemeProvider value={AppTheme}>
-          <SafeAreaView style={tw`flex-1 bg-background`}>
-            <KeyboardProvider>
-              {/* Status bar color */}
-              <StatusBar
-                style="dark"
-                backgroundColor="#2564eb07"
-                translucent={false}
-              />
+          <ConfirmDialogProvider>
+            <SafeAreaView style={tw`flex-1 bg-background`}>
+              <KeyboardProvider>
+                {/* Status bar color */}
+                <StatusBar
+                  style="dark"
+                  backgroundColor="#2564eb07"
+                  translucent={false}
+                />
 
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                  contentStyle: {
-                    backgroundColor: "#2564eb07",
-                  },
-                  statusBarStyle: "dark",
-                  statusBarBackgroundColor: "#2564eb07",
-                }}
-              >
-                <Stack.Screen name="index" />
-              </Stack>
-            </KeyboardProvider>
-          </SafeAreaView>
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                    contentStyle: {
+                      backgroundColor: "#2564eb07",
+                    },
+                    statusBarStyle: "dark",
+                    statusBarBackgroundColor: "#2564eb07",
+                  }}
+                >
+                  <Stack.Screen name="index" />
+                </Stack>
+              </KeyboardProvider>
+            </SafeAreaView>
+          </ConfirmDialogProvider>
         </ThemeProvider>
         <Toaster />
       </SafeAreaProvider>
