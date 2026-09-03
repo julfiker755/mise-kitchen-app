@@ -1,5 +1,6 @@
+import BottomButton from "@/components/reuseable/bottom-button";
 import { recipe_sc } from "@/components/schema";
-import { BackBtn, FormInput } from "@/components/ui";
+import { BackBtn, Button, FormInput } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
 import { Insets } from "@/utils";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -8,8 +9,7 @@ import React, { useState } from "react";
 import {
   StatusBar,
   Text,
-  TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -264,21 +264,25 @@ export const RecipeFormContainer: React.FC<RecipeFormContainerProps> = ({
                   ) : null}
 
                   {/* Add New Step Trigger Button */}
-                  <TouchableOpacity
-                    activeOpacity={0.8}
+                  <Button variant="secondary"
+                    style={tw`rounded-xl bg-[#592D000F] h-13`}
                     onPress={() => {
                       setEditingStepIndex(null);
                       setStepModalVisible(true);
                     }}
-                    style={tw`w-full bg-[#EAE6DD]/70 border border-[#E0DBD0] rounded-2xl py-4 flex-row items-center justify-center gap-2`}
                   >
-                    <Ionicons name="add" size={20} color="#5B7553" />
-                    <Text
-                      style={tw`text-[15px] font-semibold text-[#1E2022]`}
-                    >
-                      Add new step
-                    </Text>
-                  </TouchableOpacity>
+
+                    <View style={tw`flex-row items-center gap-2`}>
+
+                      <Ionicons name="add" size={20} color="#5B7553" />
+                      <Text
+                        style={tw`text-[15px] font-semibold text-primary`}
+                      >
+                        Add new step
+                      </Text>
+                    </View>
+                  </Button>
+
 
                   {touched.instructions && errors.instructions ? (
                     <Text style={tw`text-red-500 text-xs mt-1.5 ml-1`}>
@@ -287,25 +291,7 @@ export const RecipeFormContainer: React.FC<RecipeFormContainerProps> = ({
                   ) : null}
                 </View>
               </KeyboardAwareScrollView>
-
-              {/* Floating / Pinned Bottom Action Button */}
-              <View
-                style={[
-                  tw`absolute bottom-0 left-0 right-0 bg-[#FAF7F2]/95 px-5 pt-3 border-t border-[#EBE6DC] shadow-lg`,
-                  { paddingBottom: bottomInset },
-                ]}
-              >
-                <TouchableOpacity
-                  activeOpacity={0.88}
-                  onPress={() => handleSubmit()}
-                  style={tw`bg-primary w-full h-[52px] rounded-full flex-row items-center justify-center shadow-md`}
-                >
-                  <Text style={tw`text-white font-bold text-[16px]`}>
-                    {submitButtonLabel}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-
+              <BottomButton text={submitButtonLabel} onPress={() => handleSubmit()} />
               {/* Category Dropdown Modal */}
               <RecipeSelectModal
                 visible={categoryModalVisible}

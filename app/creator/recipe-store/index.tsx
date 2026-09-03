@@ -24,7 +24,7 @@ const RecipeStore = () => {
   const handleAddRecipe = (values: RecipeFormValues) => {
     console.log("Adding New Recipe:", values);
     // In a real app or API integration, save recipe to backend/store here
-    router.back();
+    // router.back();
   };
 
   return (

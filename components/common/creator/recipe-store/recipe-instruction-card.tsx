@@ -24,7 +24,7 @@ export const RecipeInstructionCard: React.FC<RecipeInstructionCardProps> = ({
   onDelete,
 }) => {
   return (
-    <View style={tw`bg-white rounded-2xl p-4 mb-4 border border-[#E8E4DB] shadow-sm`}>
+    <View style={tw`bg-white rounded-2xl p-4 mb-4 border border-[#E8E4DB] `}>
       {/* Header with Step label and Action Icons */}
       <View style={tw`flex-row items-center justify-between mb-3`}>
         <Text style={tw`text-[15px] font-bold text-[#1F2937]`}>
