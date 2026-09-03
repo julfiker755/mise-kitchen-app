@@ -21,11 +21,11 @@ const RecipeEdit = () => {
     const galleryImgs = found?.images && found.images.length >= 4
       ? found.images.slice(0, 4)
       : [
-          "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=300&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1552611052-33e04de081de?q=80&w=300&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=300&auto=format&fit=crop",
-          "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=300&auto=format&fit=crop",
-        ];
+        "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=300&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1552611052-33e04de081de?q=80&w=300&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?q=80&w=300&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1540420773420-3366772f4999?q=80&w=300&auto=format&fit=crop",
+      ];
 
     const ings = found?.ingredients || [
       "2 packs fresh or dried ramen noodles.",
@@ -71,9 +71,8 @@ const RecipeEdit = () => {
   }, [id]);
 
   const handleUpdateRecipe = (values: RecipeFormValues) => {
-    console.log("Updating Recipe Details:", values);
-    // In a real app or API integration, update recipe in backend/store here
-    router.back();
+    console.log("Updating Recipe Details:", JSON.stringify(values));
+
   };
 
   return (

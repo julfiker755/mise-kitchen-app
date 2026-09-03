@@ -1,4 +1,5 @@
 import { defaultRecipeDetails, popularRecipes, Recipe } from "@/components/data";
+import BottomButton from "@/components/reuseable/bottom-button";
 import { Button, Heading } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
 import useConfirmation from "@/hooks/use-confirmation";
@@ -8,6 +9,7 @@ import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
+    FlatList,
     Image,
     ScrollView,
     StatusBar,
@@ -32,6 +34,25 @@ const ingredientsData = [
     '1 teaspoon black sesame seeds',
 ];
 
+
+
+const images = [
+    {
+        id: 1,
+        image:
+            "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=600&auto=format&fit=crop",
+    },
+    {
+        id: 2,
+        image:
+            "https://images.unsplash.com/photo-1552611052-33e04de081de?q=80&w=600&auto=format&fit=crop",
+    },
+    {
+        id: 3,
+        image:
+            "https://images.unsplash.com/photo-1617093727343-374698b1b08d?q=80&w=600&auto=format&fit=crop",
+    },
+];
 
 
 export default function RecipeDetailsScreen({ type }: {
@@ -62,6 +83,14 @@ export default function RecipeDetailsScreen({ type }: {
         };
     }, [id]);
 
+    const carouselImages = useMemo(() => {
+        if (recipe.images && recipe.images.length > 0) {
+            return recipe.images;
+        }
+        return images.map((img) => img.image);
+    }, [recipe.images]);
+
+    const [activeSlide, setActiveSlide] = useState(0);
     const [isFavorite, setIsFavorite] = useState(recipe.isFavorite ?? false);
     const [showInstructions, setShowInstructions] = useState(true);
 
@@ -92,12 +121,45 @@ export default function RecipeDetailsScreen({ type }: {
                 contentContainerStyle={tw`pb-32`}
             >
                 <View style={tw`relative w-full h-[350px] bg-gray-200 overflow-hidden`}>
-
-                    <Image
-                        source={{ uri: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?q=80&w=600&auto=format&fit=crop" }}
-                        style={{ width: SCREEN_WIDTH, height: 350 }}
-                        resizeMode="cover"
+                    {/* --------- Carousel Slider --------- */}
+                    <FlatList
+                        data={carouselImages}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        keyExtractor={(_, index) => index.toString()}
+                        onMomentumScrollEnd={(event) => {
+                            const slideIndex = Math.round(
+                                event.nativeEvent.contentOffset.x / SCREEN_WIDTH
+                            );
+                            setActiveSlide(slideIndex);
+                        }}
+                        renderItem={({ item }) => (
+                            <Image
+                                source={{ uri: item }}
+                                style={{ width: SCREEN_WIDTH, height: 350 }}
+                                resizeMode="cover"
+                            />
+                        )}
                     />
+
+                    {/* --------- Pagination Dots --------- */}
+                    {carouselImages.length > 1 && (
+                        <View style={tw`absolute bottom-4 left-0 right-0 flex-row justify-center items-center gap-1.5 z-10`}>
+                            {carouselImages.map((_, index) => (
+                                <View
+                                    key={index}
+                                    style={[
+                                        tw`h-2 rounded-full`,
+                                        activeSlide === index
+                                            ? tw`w-6 bg-white`
+                                            : tw`w-2 bg-white/60`,
+                                    ]}
+                                />
+                            ))}
+                        </View>
+                    )}
+
                     <View
                         style={[
                             tw`absolute top-0 left-0 right-0 z-20 flex-row justify-between items-center px-5`,
@@ -319,27 +381,8 @@ export default function RecipeDetailsScreen({ type }: {
                 </View>
             </ScrollView>
 
-            <Button style={[
-                tw`absolute bottom-0 left-0 right-0 bg-[#FAF7F2]/95 px-5 pt-3 border-t border-[#EBE6DC]`,
-                { paddingBottom: Insets.useBottom(16, 8) },
-            ]}>
+            <BottomButton text="Let&apos;s cook" />
 
-            </Button>
-            <View
-                style={[
-                    tw`absolute bottom-0 left-0 right-0 bg-[#FAF7F2]/95 px-5 pt-3 border-t border-[#EBE6DC]`,
-                    { paddingBottom: Insets.useBottom(16, 8) },
-                ]}
-            >
-                <TouchableOpacity
-                    activeOpacity={0.9}
-                    style={tw`bg-primary w-full py-4 rounded-full items-center justify-center shadow-md`}
-                >
-                    <Text style={tw`text-white font-bold text-base tracking-wide`}>
-                        Let&apos;s cook
-                    </Text>
-                </TouchableOpacity>
-            </View>
         </View>
     );
 }
