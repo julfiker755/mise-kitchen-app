@@ -1,8 +1,10 @@
-# 🍲 SwifPay - Recipe & Meal Discovery Application
+# Recipe & Meal Discovery Application
 
 A modern, high-performance mobile application built with **React Native (Expo SDK 54)** and **TypeScript**. SwifPay connects food enthusiasts and culinary creators with recipe discovery, meal planning, step-by-step cooking guides, and a dedicated creator management studio.
 
 ---
+
+# web link [https://github.com/julfiker755/mise-kitchen-web]
 
 ## 📱 Project Overview
 
