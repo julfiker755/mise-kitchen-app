@@ -4,12 +4,11 @@ import { Button, Heading } from "@/components/ui";
 import tw from "@/components/ui/tailwind";
 import useConfirmation from "@/hooks/use-confirmation";
 import FavIcon from "@/icon/favIcon";
-import { Insets, window } from "@/utils";
+import { Insets } from "@/utils";
 import { Feather, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Link, useLocalSearchParams, useRouter } from "expo-router";
 import React, { useMemo, useState } from "react";
 import {
-    FlatList,
     Image,
     ScrollView,
     StatusBar,
@@ -18,9 +17,10 @@ import {
     View
 } from "react-native";
 import CalculationHeading from "./calculation-heading";
+import RecipeCarousel from "./recipe-carousel";
 import StatsGrid from "./stats-grid";
 
-const SCREEN_WIDTH = window.width;
+
 
 
 
@@ -122,43 +122,11 @@ export default function RecipeDetailsScreen({ type }: {
             >
                 <View style={tw`relative w-full h-[350px] bg-gray-200 overflow-hidden`}>
                     {/* --------- Carousel Slider --------- */}
-                    <FlatList
-                        data={carouselImages}
-                        horizontal
-                        pagingEnabled
-                        showsHorizontalScrollIndicator={false}
-                        keyExtractor={(_, index) => index.toString()}
-                        onMomentumScrollEnd={(event) => {
-                            const slideIndex = Math.round(
-                                event.nativeEvent.contentOffset.x / SCREEN_WIDTH
-                            );
-                            setActiveSlide(slideIndex);
-                        }}
-                        renderItem={({ item }) => (
-                            <Image
-                                source={{ uri: item }}
-                                style={{ width: SCREEN_WIDTH, height: 350 }}
-                                resizeMode="cover"
-                            />
-                        )}
+                    <RecipeCarousel
+                        images={carouselImages}
+                        height={350}
+                        onSlideChange={setActiveSlide}
                     />
-
-                    {/* --------- Pagination Dots --------- */}
-                    {carouselImages.length > 1 && (
-                        <View style={tw`absolute bottom-4 left-0 right-0 flex-row justify-center items-center gap-1.5 z-10`}>
-                            {carouselImages.map((_, index) => (
-                                <View
-                                    key={index}
-                                    style={[
-                                        tw`h-2 rounded-full`,
-                                        activeSlide === index
-                                            ? tw`w-6 bg-white`
-                                            : tw`w-2 bg-white/60`,
-                                    ]}
-                                />
-                            ))}
-                        </View>
-                    )}
 
                     <View
                         style={[

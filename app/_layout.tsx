@@ -1,3 +1,4 @@
+import "@/utils/polyfill";
 import { ConfirmDialogProvider } from "@/components/modal/confirm-dialog";
 import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { Stack } from "expo-router";
