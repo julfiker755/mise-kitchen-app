@@ -1,23 +1,10 @@
-# 🍳 Mise Kitchen - Modern Culinary & Recipe Ecosystem
+# 🍲 Mise Kitchen - Recipe & Meal Discovery Application
 
-<div align="center">
-
-[![Expo SDK](https://img.shields.io/badge/Expo-SDK%2054-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev/)
-[![React Native](https://img.shields.io/badge/React%20Native-0.81.5-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactnative.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Expo Router](https://img.shields.io/badge/Expo%20Router-v6-black?style=for-the-badge&logo=expo&logoColor=white)](https://docs.expo.dev/router/introduction/)
-[![Zustand](https://img.shields.io/badge/State-Zustand%205-brown?style=for-the-badge)](https://github.com/pmndrs/zustand)
-[![License](https://img.shields.io/badge/License-Private-green?style=for-the-badge)]()
-
-<p align="center">
-  <strong>Mise Kitchen</strong> is a cross-platform mobile application designed for home cooks, food lovers, and culinary creators. Inspired by the French culinary philosophy of <em>"mise en place"</em> — preparing and having everything in its place — Mise Kitchen streamlines recipe discovery, meal planning, step-by-step cooking execution, and culinary content publishing.
-</p>
-
-[Key Features](#-key-features) • [Architecture](#-architecture--design-system) • [Project Structure](#-project-structure) • [Creator Studio](#-creator-management-studio) • [Getting Started](#-getting-started) • [Routes](#-route-navigation-breakdown)
-
-</div>
+A modern, high-performance mobile application built with **React Native (Expo SDK 54)** and **TypeScript**. Mise Kitchen connects food enthusiasts and culinary creators with recipe discovery, meal planning, step-by-step cooking guides, and a dedicated creator management studio.
 
 ---
+
+# web link [https://github.com/julfiker755/mise-kitchen-web]
 
 ## 📖 Executive Summary & Project Analysis
 
